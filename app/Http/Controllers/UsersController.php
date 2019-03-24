@@ -13,26 +13,35 @@ class UsersController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth', [
-            'except' => ['show', 'create', 'store']
+        $this->middleware('auth', [ // 针对 未登录用户访问路由无需验证身份
+            'except' => ['show', 'create', 'store',' index']
         ]);
 
-        $this->middleware('guest', [
+        $this->middleware('guest', [ //针对 已登录用户 无法访问注册
             'only' => ['create']
         ]);
     }
 
-    public function create()
+    public function index()
+    {
+        $users = User::paginate(10);
+        return view('users.index',compact('users'));
+
+    }
+
+
+
+    public function create() //注册
     {
         return view('users.create');
     }
 
-    public function show(User $user)
+    public function show(User $user) //登录用户展示个人信息
     {
         return view('users.show', compact('user'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request) // 表单验证注册新用户
     {
         $this->validate($request, [
             'name' => 'required | max:50',

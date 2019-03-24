@@ -29,3 +29,5 @@ Route::delete('logout', 'SessionsController@destroy')->name('logout'); //销毁�
 
 //用户个人信息编辑
 Route::get('/users/{user}/edit', 'UsersController@edit')->name('users.edit');
+
+// 用户列表
