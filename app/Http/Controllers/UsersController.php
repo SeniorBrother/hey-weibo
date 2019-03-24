@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+
 
 
 class UsersController extends Controller
@@ -46,7 +48,7 @@ class UsersController extends Controller
     public function update(User $user, Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|max:50',
+            'name' => 'required|max:50|',
             'password' => 'nullable|confirmed|min:6'
         ]);
 
@@ -54,7 +56,7 @@ class UsersController extends Controller
         $data['name'] = $request->name; //赋值数组
 
         if ($request->password){
-            $data['password'] = bcrypt($request->password);
+            $data['password'] = bcrypt($request->password); //密码改动就会加密传递
         }
 
         $user->update($data);
