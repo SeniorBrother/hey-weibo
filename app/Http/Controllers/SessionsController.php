@@ -20,7 +20,7 @@ class SessionsController extends Controller
         return view('sessions.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request) // 1. 验证登录的参数 2. 验证数据库 进入
     {
         $credentials = $this->validate($request, [
             'email' => 'required|email|max:255',
@@ -28,9 +28,16 @@ class SessionsController extends Controller
         ]);
 
         if (Auth::attempt($credentials, $request->has('remember'))) {
-            session()->flash('success', '亲，欢迎回家！');
-            $fallback = route('users.show', [Auth::user()]);// Auth::user()当前登录用户信息传递show
-            return redirect()->intended($fallback); // intended 自动引导访问位置
+            if (Auth::user()->activated){
+                session()->flash('success', '亲，欢迎回家！');
+                $fallback = route('users.show', [Auth::user()]);// Auth::user()当前登录用户信息传递show
+                return redirect()->intended($fallback); // intended 自动引导访问位置
+
+            }else{
+                Auth::logout();
+                session()->flash('warring','你的账号未激活，请检查注册邮箱进行激活');
+                return redirect('/');
+            }
 
         } else {
             session()->flash('danger', '很抱歉，您的邮箱和密码不匹配'); // 闪存展示失败
