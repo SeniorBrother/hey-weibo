@@ -97,15 +97,15 @@ class UsersController extends Controller
 
     public function confirmEmai($token)
     {
-        $user = User::where('activation_token',$token)->firstOrFail();
+        $user = User::where('activation_token', $token)->firstOrFail();
 
         $user->activated = true;
-        $user->activation_token = null ;
+        $user->activation_token = null;
         $user->save();
 
         Auth::login($user);
-        session()->flash('success','共享您激活账号成功');
-        return redirect()->route('user.show',['user']);
+        session()->flash('success', '共享您激活账号成功');
+        return redirect()->route('user.show', ['user']);
     }
 
 
@@ -113,13 +113,11 @@ class UsersController extends Controller
     {
         $view = 'emails.confirm';
         $data = compact('user');
-        $from = '531264328@qq.com';
-        $name = 'Sunrise Weibo';
         $to = $user->email;
         $subject = '感谢注册 Sunrise 应用！请确认你的邮箱';
 
-        Mail::send($view, $data, function($message) use ($from, $name, $to, $subject) {
-        $message->from($from, $name)->to($to)->subject($subject);
-    });
+        Mail::send($view, $data, function ($message) use ($to, $subject) {
+            $message->to($to)->subject($subject);
+        });
     }
 }
