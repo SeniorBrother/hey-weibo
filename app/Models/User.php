@@ -33,7 +33,7 @@ class User extends Authenticatable
     {
         parent::boot();
 
-        static ::creating(function ($user){
+        static::creating(function ($user) {
             $user->activation_token = str_random(30);
         });
     }
@@ -58,5 +58,10 @@ class User extends Authenticatable
     public function statuses()
     {
         return $this->hasMany(Status::class);
+    }
+
+    public function feed()
+    {
+        return $this->statuses()->orderByDesc('created_at');
     }
 }
