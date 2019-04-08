@@ -43,3 +43,7 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('passw
 
 // 微博创建和微博删除
 Route::resource('statuses', 'StatusesController', ['only' => ['store', 'destroy']]);
+
+//关注、粉丝关系路由
+Route::get('/user/{user}/followings','UsersController@followings')->name('users.followings');
+Route::get('/uesrs/{user}/followers','UsersController@followers')->name('users.followers');
