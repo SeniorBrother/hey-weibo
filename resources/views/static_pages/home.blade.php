@@ -1,7 +1,7 @@
 @extends('layouts.default')
-@section('title','主页')
+
 @section('content')
-    @if(Auth::check())
+    @if (Auth::check())
         <div class="row">
             <div class="col-md-8">
                 <section class="status_form">
@@ -15,9 +15,11 @@
                 <section class="user_info">
                     @include('shared._user_info', ['user' => Auth::user()])
                 </section>
+                <section class="stats mt-2">
+                    @include('shared._stats', ['user' => Auth::user()])
+                </section>
             </aside>
         </div>
-
     @else
         <div class="jumbotron">
             <h1>Hello Laravel</h1>
@@ -28,7 +30,7 @@
                 一切，将从这里开始。
             </p>
             <p>
-                <a class="btn btn-ls btn-success" href="{{ route('signup') }}" role="button">现在注册</a>
+                <a class="btn btn-lg btn-success" href="{{ route('signup') }}" role="button">现在注册</a>
             </p>
         </div>
     @endif
